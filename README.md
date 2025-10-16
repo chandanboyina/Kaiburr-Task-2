@@ -8,14 +8,14 @@ This repository contains the solution for Kaiburr Assessment Task 2, which invol
 
 ## Deployment Instructions
 
-### 1. Prerequisites
+## 1. Prerequisites
 
 * **Java JDK 17+**: Required to build the application.
 * **Maven**: Required to package the application.
 * **Docker Desktop**: Used to build the Docker image and provides a local Kubernetes cluster.
 * **kubectl**: The command-line tool for interacting with the Kubernetes cluster.
 
-### 2. Build and Push the Docker Image
+## 2. Build and Push the Docker Image
 
 First, build the application's executable JAR file. From your project's root directory, run:
 ```bash
@@ -32,12 +32,7 @@ Finally, push the image to your Docker Hub repository.
 docker push chandanboyina/kaiburr-app:1.0
 ```
 
-### 3. Deploy to Kubernetes
-
-Deploy MongoDB: This manifest creates a MongoDB pod with persistent storage and a service for your application to connect to.
-```bash
-kubectl apply -f mongodb-deployment.yaml
-```
+## 3. Deploy to Kubernetes
 
 Deploy RBAC Resources: This manifest creates the necessary Service Account, Role, and RoleBinding to give your application pod permissions to create and manage other pods.
 ```bash
@@ -49,19 +44,29 @@ Deploy the Application: This manifest deploys your application's pod and service
 kubectl apply -f app-deployment.yaml
 ```
 
-To apply changes after the initial deployment, you can force a restart:
+Deploy MongoDB: This manifest creates a MongoDB pod with persistent storage and a service for your application to connect to.
 ```bash
-kubectl rollout restart deployment/kaiburr-app-deployment
+kubectl apply -f mongodb-deployment.yaml
 ```
+![Homepage](https://github.com/chandanboyina/Kaiburr-Task-2/blob/master/deployemtn%20yaml.jpeg)
 
 1.
 ```bash
 kubectl get pods
 ```
 This command shows that the application and MongoDB pods are in a Running state.
+![Homepage](https://github.com/chandanboyina/Kaiburr-Task-2/blob/master/get%20pods.jpeg)
 
 
 ```bash
 kubectl get services
 ```
 This command shows the NodePort service is active and exposing your application's endpoints to your host machine.
+![Homepage](https://github.com/chandanboyina/Kaiburr-Task-2/blob/master/get%20services.jpeg)
+
+
+```bash
+curl -X PUT http://localhost:30007/tasks/1/execute
+```
+This command proves that an application endpoint is available from the host machine. The successful response shows that the PUT a TaskExecution endpoint correctly created and ran a command in a new pod.
+![Homepage](https://github.com/chandanboyina/Kaiburr-Task-2/blob/master/curl%20command.jpeg)
